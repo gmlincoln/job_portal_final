@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="mb-8">
+  <h1 class="text-4xl font-bold text-gray-900 mb-2">Find Your Perfect Job</h1>
+  <p class="text-gray-600 text-lg">Discover opportunities that match your skills</p>
+</div>
+
+<!-- Search Section -->
+<div class="bg-white p-6 rounded shadow mb-8">
+  <form method="get" class="flex gap-2">
+    <input type="text" name="q" placeholder="Search jobs by title, skills, or description..." class="flex-1 border border-gray-300 p-3 rounded focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500" value="{{ query }}"/>
+    <button type="submit" class="bg-blue-600 text-white px-8 py-3 rounded hover:bg-blue-700 font-medium">Search</button>
+  </form>
+</div>
+
+<!-- Skill-Matched Jobs Section (for authenticated jobseekers) -->
+{% if show_skill_match and matched_jobs %}
+  <div class="mb-12">
+    <h2 class="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
+      <span class="text-2xl">🎯</span>
+      Skill Matched
+    </h2>
+    <p class="text-md text-gray-600 mb-6">Recommended based on your profile skills</p>
+    
+    <!-- Matched Jobs List -->
+    <div class="space-y-4">
+      {% for job in matched_jobs %}
+        <div class="bg-white p-5 rounded shadow hover:shadow-lg transition border-l-4 border-green-500">
+          <div class="flex justify-between items-start mb-2">
+            <h3 class="text-xl font-bold text-blue-600">{{ job.title }}</h3>
+            {% if job.company_logo %}
+              <img src="{{ job.company_logo.url }}" alt="Company Logo" class="h-12 w-12 object-cover rounded">
+            {% endif %}
+          </div>
+          
+          <!-- Company Info -->
+          <p class="text-sm text-gray-600 mb-2 font-medium">
+            {% if job.recruiter.recruiterprofile %}
+              {{ job.recruiter.recruiterprofile.company_name }}
+            {% else %}
+              Company
+            {% endif %}
+          </p>
+          
+          <!-- Job Details -->
+          <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
+            <p class="text-gray-700"><strong>Openings:</strong> {{ job.openings }}</p>
+            <p class="text-gray-700"><strong>Skills Required:</strong> {{ job.skills }}</p>
+          </div>
+          
+          <!-- Description -->
+          <p class="text-gray-700 mb-3">{{ job.description|truncatechars:200 }}</p>
+          
+          <!-- View Details Button -->
+          <a href="{% url 'job_detail' job.id %}" class="inline-block bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 font-medium">
+            View Details & Apply →
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+
+<!-- Available Jobs Section -->
+<div class="mb-6">
+  <h2 class="text-2xl font-bold text-gray-900 mb-4">Available Jobs</h2>
+  
+  <!-- Jobs List -->
+  <div class="space-y-4">
+    {% for job in jobs %}
+      <div class="bg-white p-5 rounded shadow hover:shadow-lg transition border-l-4 border-blue-500">
+        <div class="flex justify-between items-start mb-2">
+          <h3 class="text-xl font-bold text-blue-600">{{ job.title }}</h3>
+          {% if job.company_logo %}
+            <img src="{{ job.company_logo.url }}" alt="Company Logo" class="h-12 w-12 object-cover rounded">
+          {% endif %}
+        </div>
+        
+        <!-- Company Info -->
+        <p class="text-sm text-gray-600 mb-2 font-medium">
+          {% if job.recruiter.recruiterprofile %}
+            {{ job.recruiter.recruiterprofile.company_name }}
+          {% else %}
+            Company
+          {% endif %}
+        </p>
+        
+        <!-- Job Details -->
+        <div class="grid grid-cols-2 gap-3 mb-3 text-sm">
+          <p class="text-gray-700"><strong>Openings:</strong> {{ job.openings }}</p>
+          <p class="text-gray-700"><strong>Skills Required:</strong> {{ job.skills }}</p>
+        </div>
+        
+        <!-- Description -->
+        <p class="text-gray-700 mb-3">{{ job.description|truncatechars:200 }}</p>
+        
+        <!-- View Details Button -->
+        <a href="{% url 'job_detail' job.id %}" class="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 font-medium">
+          View Details →
+        </a>
+      </div>
+    {% empty %}
+      <div class="bg-white p-8 rounded shadow text-center">
+        <p class="text-gray-600 text-lg">
+          {% if query %}
+            No jobs found matching "{{ query }}". Try a different search.
+          {% else %}
+            No jobs available at the moment.
+          {% endif %}
+        </p>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- CTA for Registration -->
+{% if not user.is_authenticated %}
+  <div class="bg-blue-50 border border-blue-200 p-8 rounded text-center mt-8">
+    <h3 class="text-2xl font-bold text-gray-900 mb-2">Ready to Get Started?</h3>
+    <p class="text-gray-600 mb-4">Create an account to apply for jobs and track your applications</p>
+    <a href="{% url 'register' %}" class="inline-block bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 font-medium">
+      Register Now
+    </a>
+  </div>
+{% endif %}
+{% endblock %}

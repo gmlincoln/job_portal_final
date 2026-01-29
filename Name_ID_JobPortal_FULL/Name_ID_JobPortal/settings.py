@@ -5,12 +5,21 @@ SECRET_KEY='dev'
 DEBUG=True
 ALLOWED_HOSTS=[]
 INSTALLED_APPS=[
- 'django.contrib.admin','django.contrib.auth','django.contrib.contenttypes',
- 'django.contrib.sessions','django.contrib.messages','django.contrib.staticfiles',
- 'accounts','jobs','dashboard',
+ 'django.contrib.admin',
+ 'django.contrib.auth',
+ 'django.contrib.contenttypes',
+ 'django.contrib.sessions',
+ 'django.contrib.messages',
+ 'django.contrib.staticfiles',
+ 'accounts',
+ 'jobs',
+ 'dashboard',
 ]
+
 AUTH_USER_MODEL='accounts.User'
+
 DATABASES={'default':{'ENGINE':'django.db.backends.sqlite3','NAME':BASE_DIR/'db.sqlite3'}}
+
 MIDDLEWARE=[
  'django.middleware.security.SecurityMiddleware',
  'django.contrib.sessions.middleware.SessionMiddleware',
@@ -19,7 +28,11 @@ MIDDLEWARE=[
  'django.contrib.auth.middleware.AuthenticationMiddleware',
  'django.contrib.messages.middleware.MessageMiddleware',
 ]
+
 ROOT_URLCONF='Name_ID_JobPortal.urls'
+
+WSGI_APPLICATION='Name_ID_JobPortal.wsgi.application'
+
 TEMPLATES=[{
  'BACKEND':'django.template.backends.django.DjangoTemplates',
  'DIRS':[BASE_DIR/'templates'],
@@ -31,7 +44,11 @@ TEMPLATES=[{
   'django.contrib.messages.context_processors.messages',
  ]},
 }]
+
 STATIC_URL='/static/'
+
 MEDIA_URL='/media/'
+
 MEDIA_ROOT=BASE_DIR/'media'
+
 DEFAULT_AUTO_FIELD='django.db.models.BigAutoField'

@@ -43,6 +43,7 @@ def job_create(request):
         Job.objects.create(
             recruiter=request.user,
             title=request.POST.get('title',''),
+            category=request.POST.get('category', 'General'),
             openings=int(request.POST.get('openings') or 1),
             description=request.POST.get('description',''),
             skills=request.POST.get('skills',''),
@@ -61,6 +62,7 @@ def job_edit(request, pk):
         return redirect('/')
     if request.method == 'POST':
         job.title = request.POST.get('title', job.title)
+        job.category = request.POST.get('category', job.category)
         job.description = request.POST.get('description', job.description)
         job.skills = request.POST.get('skills', job.skills)
         job.openings = int(request.POST.get('openings') or job.openings)

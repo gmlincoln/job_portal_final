@@ -8,6 +8,7 @@ class Job(models.Model):
     description=models.TextField()
     skills=models.TextField()
     openings=models.IntegerField()
+    category=models.CharField(max_length=100, default='General')
     company_logo=models.ImageField(upload_to='company_logos/', null=True, blank=True)
     created_at=models.DateTimeField(auto_now_add=True)
 

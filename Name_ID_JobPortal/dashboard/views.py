@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from jobs.models import Job, JobApplication
+from accounts.models import JobSeekerProfile
 
 def home(request):
     """Home page - shows available jobs with search for all users"""
@@ -62,8 +63,25 @@ def dashboard(request):
     elif request.user.user_type == 'RECRUITER':
         # Show recruiter's job postings
         your_jobs = Job.objects.filter(recruiter=request.user)
+        
+        # Skill matching for recruiters: Find candidates for each job
+        matched_candidates = {} # {job: [list of matching profiles]}
+        all_candidates = JobSeekerProfile.objects.all()
+        
+        for job in your_jobs:
+            job_skills = set([s.strip().lower() for s in job.skills.split(',') if s.strip()])
+            matches = []
+            if job_skills:
+                for candidate in all_candidates:
+                    candidate_skills = set([s.strip().lower() for s in candidate.skills.split(',') if s.strip()])
+                    if job_skills & candidate_skills:
+                        matches.append(candidate)
+            if matches:
+                matched_candidates[job] = matches
+
         return render(request, 'dashboard.html', {
             'your_jobs': your_jobs,
+            'matched_candidates': matched_candidates,
             'page_title': 'My Job Postings'
         })
     

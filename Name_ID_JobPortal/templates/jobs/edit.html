@@ -7,25 +7,32 @@
     {% csrf_token %}
     <div>
       <label class="block font-semibold mb-2">Job Title *</label>
-      <input name="title" class="w-full border p-3 rounded" value="{{ job.title }}" required/>
+      <input name="title" class="w-full border p-3 rounded" value="{{ job.title }}" required />
     </div>
-    
+
+    <div>
+      <label class="block font-semibold mb-2">Category *</label>
+      <input name="category" class="w-full border p-3 rounded" value="{{ job.category }}" required />
+    </div>
+
     <div>
       <label class="block font-semibold mb-2">Company Logo</label>
       {% if job.company_logo %}
-        <p class="text-sm text-gray-600 mb-2">Current logo: <img src="{{ job.company_logo.url }}" alt="Logo" class="h-16 inline-block"></p>
+      <p class="text-sm text-gray-600 mb-2">Current logo: <img src="{{ job.company_logo.url }}" alt="Logo"
+          class="h-16 inline-block"></p>
       {% endif %}
-      <input name="company_logo" type="file" accept="image/*" class="w-full border p-3 rounded"/>
+      <input name="company_logo" type="file" accept="image/*" class="w-full border p-3 rounded" />
     </div>
 
     <div class="grid grid-cols-2 gap-4">
       <div>
         <label class="block font-semibold mb-2">Number of Openings *</label>
-        <input name="openings" type="number" class="w-full border p-3 rounded" value="{{ job.openings }}" min="1" required/>
+        <input name="openings" type="number" class="w-full border p-3 rounded" value="{{ job.openings }}" min="1"
+          required />
       </div>
       <div>
         <label class="block font-semibold mb-2">Required Skills *</label>
-        <input name="skills" class="w-full border p-3 rounded" value="{{ job.skills }}" required/>
+        <input name="skills" class="w-full border p-3 rounded" value="{{ job.skills }}" required />
       </div>
     </div>
 
@@ -35,8 +42,10 @@
     </div>
 
     <div class="flex gap-3">
-      <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 font-medium">Update Job</button>
-      <a href="{% url 'dashboard' %}" class="bg-gray-400 text-white px-6 py-3 rounded hover:bg-gray-500 font-medium">Cancel</a>
+      <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700 font-medium">Update
+        Job</button>
+      <a href="{% url 'dashboard' %}"
+        class="bg-gray-400 text-white px-6 py-3 rounded hover:bg-gray-500 font-medium">Cancel</a>
     </div>
   </form>
 </div>
